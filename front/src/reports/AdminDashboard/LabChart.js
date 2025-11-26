@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import '../../chartConfig';
 import { Doughnut } from 'react-chartjs-2';
-
-ChartJS.register(ArcElement, Tooltip, Legend);
 
 const monthNames = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -285,7 +283,7 @@ export default function LabChart() {
         ) : chartData ? (
           <>
             <div className="chart-inner">
-              <Doughnut data={chartData} options={chartOptions} plugins={plugins} />
+              <Doughnut data={chartData} options={chartOptions} plugins={plugins} redraw />
             </div>
             <div className="stats-container">
               <div className="stat-item success">

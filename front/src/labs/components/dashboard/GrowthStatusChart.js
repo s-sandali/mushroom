@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../../../chartConfig';
 import { Line } from 'react-chartjs-2';
 import { getBatches } from '../../api/batchApi';
 import { getDashboardStats } from '../../api/dashboardApi';
@@ -118,6 +119,7 @@ const GrowthStatusChart = () => {
       <div className="card-body" style={{ background: 'linear-gradient(120deg,#f8fafc 60%,#e6f9f0 100%)' }}>
         <div style={{ height: 320 }}>
           <Line
+            redraw
             data={chartData}
             options={{
               responsive: true,

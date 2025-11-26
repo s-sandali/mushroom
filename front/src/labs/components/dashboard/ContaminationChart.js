@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../../../chartConfig';
 import { Doughnut } from 'react-chartjs-2';
 import { getContaminationData } from '../../api/dashboardApi';
 
@@ -106,6 +107,7 @@ const ContaminationChart = () => {
         </button>
       </div>
       <Doughnut
+        redraw
         data={chartData}
         options={{
           responsive: true,
