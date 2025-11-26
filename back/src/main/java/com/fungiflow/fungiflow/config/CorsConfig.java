@@ -14,10 +14,12 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        config.addAllowedOrigin("http://localhost:3000"); // React app's origin
+        // Local development frontend
+        config.addAllowedOrigin("http://localhost:3000");
+        // Deployed Vercel frontend
+        config.addAllowedOrigin("https://mushroom-git-main-s-sandalis-projects.vercel.app");
 
         config.addAllowedMethod("*");
-
         config.addAllowedHeader("*");
 
         config.setAllowCredentials(true);
