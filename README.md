@@ -65,10 +65,5 @@ The system uses session-based authentication with the following roles:
 
 Use the `/api/auth/signup` endpoint or the Signup page to create accounts tied to one of the above roles. Login requests must include the intended role so the backend can validate it matches.
 
-## Recommended Next Steps
-
-- Populate the MySQL database with seed data for labs, inventory, and sales modules.
-- Configure HTTPS/Reverse proxy and secure cookie settings for production.
-- Add automated tests (Spring Boot + React Testing Library) to cover critical flows.
 
 Happy hacking! 🐚🍄
