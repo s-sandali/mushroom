@@ -36,16 +36,33 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/signup").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/", "/error").permitAll()
+                        // Admin-only endpoints
                         .requestMatchers("/api/admin/**", "/api/reports/**", "/api/employees/**", "/debug")
                         .hasRole("ADMIN")
+                        // LAB + SALES read-only access to selected inventory endpoints
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/inventory",
+                                "/api/inventory/low-stock",
+                                "/api/inventory/*",
+                                "/api/inventory/material-requests")
+                        .hasAnyRole("LAB", "SALES", "INVENTORY", "ADMIN")
+                        // LAB + SALES read-only access to stock snapshot endpoints under /api/v4/**
+                        .requestMatchers(HttpMethod.GET, "/api/v4/**")
+                        .hasAnyRole("LAB", "SALES", "INVENTORY", "ADMIN")
+                        // Inventory and material-requests full access for INVENTORY and ADMIN
                         .requestMatchers("/api/v1/**", "/api/v2/**", "/api/v3/**", "/api/v4/**",
                                 "/api/inventory/**", "/api/material-requests/**").hasAnyRole("INVENTORY", "ADMIN")
+                        // Allocations: LAB, SALES, ADMIN
                         .requestMatchers("/api/allocations/**").hasAnyRole("LAB", "SALES", "ADMIN")
+                        // Lab-specific endpoints
                         .requestMatchers("/api/batches/**", "/api/daily-updates/**", "/api/seeds/**")
                         .hasAnyRole("LAB", "ADMIN")
+                        // Sales-specific endpoints
                         .requestMatchers("/api/Sold/**", "/api/preorders/**", "/api/preorderAllocation/**",
                                 "/api/branch/**", "/api/product/**").hasAnyRole("SALES", "ADMIN")
+                        // Auth endpoints require any authenticated user
                         .requestMatchers("/api/auth/**").authenticated()
+                        // Everything else must be authenticated
                         .anyRequest().authenticated())
                 .httpBasic(basic -> basic.disable())
                 .formLogin(form -> form.disable());
