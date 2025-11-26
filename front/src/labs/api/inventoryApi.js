@@ -1,8 +1,9 @@
 // inventoryApi.js
 import axios from 'axios';
+import { API_BASE_URL } from '../../config/apiConfig';
 
 const API = axios.create({
-  baseURL: 'http://localhost:8080/api/inventory',
+  baseURL: `${API_BASE_URL}/api/inventory`,
   headers: {'Content-Type': 'application/json'},
   withCredentials: true
 });

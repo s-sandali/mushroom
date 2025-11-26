@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 import '../cssFiles/Inv.css';
+import { buildApiUrl } from '../config/apiConfig';
 
 export default function Inv() {
 
@@ -12,12 +13,12 @@ export default function Inv() {
     },[]);
         
         const loadInvs=async()=>{
-        const result=await axios.get("http://localhost:8080/api/v2/getInvs");
+        const result=await axios.get(buildApiUrl('/api/v2/getInvs'));
         setInvs(result.data);
       };
 
       const deleteInv=async (nid)=> {
-        await axios.delete(`http://localhost:8080/api/v2/deleteInv/${nid}`);
+        await axios.delete(buildApiUrl(`/api/v2/deleteInv/${nid}`));
         loadInvs();
       };
 

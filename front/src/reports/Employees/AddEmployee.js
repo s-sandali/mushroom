@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { UserPlus, ArrowLeft } from 'lucide-react';
+import { buildApiUrl } from '../../config/apiConfig';
 
 export default function AddEmployee() {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ export default function AddEmployee() {
     }
 
     try {
-      await axios.post("http://localhost:8080/api/employees/add", {
+      await axios.post(buildApiUrl('/api/employees/add'), {
         name,
         nic,
         phone,

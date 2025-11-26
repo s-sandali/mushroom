@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaStore } from 'react-icons/fa';
+import { buildApiUrl } from '../config/apiConfig';
 
 export default function SupplierManagement() {
   const [suppliers, setSuppliers] = useState([]);
@@ -21,7 +22,7 @@ export default function SupplierManagement() {
   const loadSuppliers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:8080/api/v3/getSuppliers");
+      const response = await axios.get(buildApiUrl('/api/v3/getSuppliers'));
       console.log("Suppliers data:", response.data);
       setSuppliers(response.data);
     } catch (error) {
@@ -44,9 +45,9 @@ export default function SupplierManagement() {
     e.preventDefault();
     try {
       if (isEditing) {
-        await axios.put("http://localhost:8080/api/v3/updateSupplier", currentSupplier);
+        await axios.put(buildApiUrl('/api/v3/updateSupplier'), currentSupplier);
       } else {
-        await axios.post("http://localhost:8080/api/v3/saveSupplier", currentSupplier);
+        await axios.post(buildApiUrl('/api/v3/saveSupplier'), currentSupplier);
       }
       resetForm();
       loadSuppliers();
@@ -60,7 +61,7 @@ export default function SupplierManagement() {
     if (window.confirm("Are you sure you want to delete this supplier?")) {
       try {
         console.log("Attempting to delete supplier with ID:", sid);
-        await axios.delete(`http://localhost:8080/api/v3/deleteSupplier/${sid}`);
+        await axios.delete(buildApiUrl(`/api/v3/deleteSupplier/${sid}`));
         loadSuppliers();
       } catch (error) {
         console.error("Error deleting supplier:", error);
@@ -72,7 +73,7 @@ export default function SupplierManagement() {
   const editSupplier = async (supplier) => {
     try {
       console.log("Attempting to edit supplier:", supplier);
-      const response = await axios.get(`http://localhost:8080/api/v3/getSupplier/${supplier.sid}`);
+      const response = await axios.get(buildApiUrl(`/api/v3/getSupplier/${supplier.sid}`));
       setCurrentSupplier(response.data);
       setIsEditing(true);
     } catch (error) {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../config/apiConfig';
 import {
   LineChart,
   Line,
@@ -17,7 +18,7 @@ export default function SalesChart() {
   const [lineKeys, setLineKeys] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/api/admin/sales-chart-grouped")
+    axios.get(`${API_BASE_URL}/api/admin/sales-chart-grouped`)
       .then((response) => {
         console.log("API Response:", response.data);
         const rawData = response.data;

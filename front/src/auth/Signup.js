@@ -13,6 +13,7 @@ import {
 } from 'react-icons/fa';
 import mushroomGrowth from '../PlantAnimation.json';
 import { ROLES } from './roles';
+import { API_BASE_URL } from '../config/apiConfig';
 
 const ROLE_OPTIONS = [
   { value: ROLES.ADMIN, label: 'Administrator', description: 'Full system access', icon: FaChartLine },
@@ -20,6 +21,8 @@ const ROLE_OPTIONS = [
   { value: ROLES.INVENTORY, label: 'Inventory Manager', description: 'Materials & stock', icon: FaBoxOpen },
   { value: ROLES.SALES, label: 'Sales Manager', description: 'Orders & branches', icon: FaSeedling }
 ];
+
+const SIGNUP_ENDPOINT = `${API_BASE_URL}/api/auth/signup`;
 
 function Signup() {
   const [username, setUsername] = useState('');
@@ -57,7 +60,7 @@ function Signup() {
     try {
       setSubmitting(true);
       setError('');
-      const response = await fetch('http://localhost:8080/api/auth/signup', {
+      const response = await fetch(SIGNUP_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

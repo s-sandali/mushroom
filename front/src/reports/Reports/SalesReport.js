@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { buildApiUrl } from '../../config/apiConfig';
 import './SalesReport.css'; // Uses your existing styling
 
 export default function SalesReport() {
@@ -15,7 +16,7 @@ export default function SalesReport() {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get('http://localhost:8080/api/reports/sales', {
+      const response = await axios.get(buildApiUrl('/api/reports/sales'), {
         params: { type: reportType, year, month, generatedBy },
         responseType: 'blob',
       });

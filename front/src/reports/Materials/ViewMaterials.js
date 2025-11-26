@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { buildApiUrl } from '../../config/apiConfig';
 
 export default function ViewMaterials() {
   const { id } = useParams();
@@ -11,7 +12,7 @@ export default function ViewMaterials() {
     const fetchMaterial = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(`http://localhost:8080/api/v3/material/view?id=${id}`, {
+        const response = await fetch(buildApiUrl(`/api/v3/material/view?id=${id}`), {
           credentials: 'include'
         });
         if (!response.ok) {

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../chartConfig';
 import { Doughnut } from 'react-chartjs-2';
+import { API_BASE_URL } from '../../config/apiConfig';
+
+const LAB_CHART_ENDPOINT = `${API_BASE_URL}/api/admin/lab-chart`;
 
 const monthNames = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -23,7 +26,7 @@ export default function LabChart() {
       setError(null);
 
       try {
-        const response = await axios.get('http://localhost:8080/api/admin/lab-chart', {
+        const response = await axios.get(LAB_CHART_ENDPOINT, {
           params: {
             year,
             month: reportType === 'monthly' ? month : undefined, // Add month parameter when in monthly mode
@@ -256,7 +259,7 @@ export default function LabChart() {
                 // Use the same function as in the useEffect to retry fetching data
                 const fetchDataFromDatabase = async () => {
                   try {
-                    const response = await axios.get('http://localhost:8080/api/admin/lab-chart', {
+                    const response = await axios.get(LAB_CHART_ENDPOINT, {
                       params: {
                         year,
                         month: reportType === 'monthly' ? month : undefined,

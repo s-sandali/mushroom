@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { API_BASE_URL } from '../../config/apiConfig';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_ROOT = `${API_BASE_URL}/api`;
 
 function BranchComponent() {
   const [branches, setBranches] = useState([]);
@@ -20,7 +21,7 @@ function BranchComponent() {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get(`${API_BASE_URL}/branch`, {
+      const response = await axios.get(`${API_ROOT}/branch`, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -32,7 +33,7 @@ function BranchComponent() {
       if (err.response) {
         errorMessage += `Server responded with status ${err.response.status}: ${err.response.data?.message || 'Unknown error'}`;
       } else if (err.request) {
-        errorMessage += 'No response received from server. Please check if the server is running at ' + API_BASE_URL;
+        errorMessage += 'No response received from server. Please check if the server is running at ' + API_ROOT;
       } else {
         errorMessage += err.message;
       }
@@ -58,10 +59,10 @@ function BranchComponent() {
     e.preventDefault();
     try {
       if (isEditing && editId) {
-        const response = await axios.put(`${API_BASE_URL}/branch/${editId}`, formData);
+        const response = await axios.put(`${API_ROOT}/branch/${editId}`, formData);
         setBranches(branches.map(branch => branch.id === editId ? response.data : branch));
       } else {
-        const response = await axios.post(`${API_BASE_URL}/branch`, formData);
+        const response = await axios.post(`${API_ROOT}/branch`, formData);
         setBranches([...branches, response.data]);
       }
       resetForm();
@@ -80,7 +81,7 @@ function BranchComponent() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this branch?')) return;
     try {
-      await axios.delete(`${API_BASE_URL}/branch/${id}`);
+      await axios.delete(`${API_ROOT}/branch/${id}`);
       setBranches(branches.filter(branch => branch.id !== id));
     } catch (err) {
       setError('Failed to delete branch');

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { buildApiUrl } from '../../config/apiConfig';
 
 export default function EditMaterials() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function EditMaterials() {
   useEffect(() => {
     const loadMaterial = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/v3/material/get');
+        const response = await axios.get(buildApiUrl('/api/v3/material/get'));
         const found = response.data.find((m) => m.id.toString() === id);
         if (found) {
           setMaterials(found);
@@ -42,7 +43,7 @@ export default function EditMaterials() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put('http://localhost:8080/api/v3/material/update', {
+      await axios.put(buildApiUrl('/api/v3/material/update'), {
         ...material,
         quantity: parseInt(material.quantity),
         id: parseInt(id)

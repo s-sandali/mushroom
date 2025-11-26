@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { buildApiUrl } from '../../config/apiConfig';
 
 export default function EditEmployee() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function EditEmployee() {
     const fetchEmployee = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`http://localhost:8080/api/employees/view?id=${id}`);
+        const response = await axios.get(buildApiUrl(`/api/employees/view?id=${id}`));
         setEmployee(response.data);
         setError(null);
       } catch (error) {
@@ -58,7 +59,7 @@ export default function EditEmployee() {
     };
 
     try {
-      await axios.put(`http://localhost:8080/api/employees/update/${id}`, updatedEmployee);
+      await axios.put(buildApiUrl(`/api/employees/update/${id}`), updatedEmployee);
       navigate("/employees");
     } catch (error) {
       console.error("Error updating employee:", error);

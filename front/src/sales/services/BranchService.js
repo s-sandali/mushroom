@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { API_BASE_URL } from '../../config/apiConfig';
 
-const BRANCH_API_BASE_URL = "http://localhost:8080/api/branch";
+const BRANCH_API_BASE_URL = `${API_BASE_URL}/api/branch`;
 
 // Create axios instance with default config
 const axiosInstance = axios.create({

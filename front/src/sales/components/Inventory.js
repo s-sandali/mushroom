@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { API_BASE_URL } from '../../config/apiConfig';
+
+const PRODUCT_ENDPOINT = `${API_BASE_URL}/api/product`;
 
 function Inventory() {
   const [products, setProducts] = useState([]);
@@ -18,7 +21,7 @@ function Inventory() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8080/api/product');
+      const response = await axios.get(PRODUCT_ENDPOINT);
       setProducts(response.data || []);
     } catch (err) {
       setProducts([]);
@@ -70,9 +73,9 @@ function Inventory() {
 
     try {
       if (isEditing && editId) {
-        await axios.put(`http://localhost:8080/api/product/${editId}`, productData, config);
+        await axios.put(`${PRODUCT_ENDPOINT}/${editId}`, productData, config);
       } else {
-        await axios.post('http://localhost:8080/api/product', productData, config);
+        await axios.post(PRODUCT_ENDPOINT, productData, config);
       }
       setFormData({ name: '', quantity: '', unitPrice: '', threshold: '' });
       setIsEditing(false);
@@ -104,7 +107,7 @@ function Inventory() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
     try {
-      await axios.delete(`http://localhost:8080/api/product/${id}`);
+      await axios.delete(`${PRODUCT_ENDPOINT}/${id}`);
       await fetchProducts();
     } catch (err) {
       setError('Failed to delete product.');

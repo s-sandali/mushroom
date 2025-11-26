@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { AlertTriangle, Package, RefreshCw, CheckCircle } from 'lucide-react';
+import { API_BASE_URL } from '../../config/apiConfig';
 
 export default function LowStockAlerts() {
   const [lowStockMaterials, setLowStockMaterials] = useState([]);
@@ -12,7 +13,7 @@ export default function LowStockAlerts() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const response = await axios.get(`http://localhost:8080/api/admin/low-stock-alerts?threshold=${threshold}`);
+      const response = await axios.get(`${API_BASE_URL}/api/admin/low-stock-alerts?threshold=${threshold}`);
       setLowStockMaterials(response.data);
       setError(null);
     } catch (err) {

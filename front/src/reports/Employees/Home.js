@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { buildApiUrl } from '../../config/apiConfig';
 
 export default function EmployeeHome() {
   const [employees, setEmployees] = useState([]);
@@ -14,7 +15,7 @@ export default function EmployeeHome() {
   const loadEmployees = async () => {
     try {
       setIsLoading(true);
-      const result = await axios.get("http://localhost:8080/api/employees/get");
+      const result = await axios.get(buildApiUrl('/api/employees/get'));
       setEmployees(result.data);
       setError(null);
     } catch (error) {
@@ -27,7 +28,7 @@ export default function EmployeeHome() {
 
   const deleteEmployee = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/employees/delete/${id}`);
+      await axios.delete(buildApiUrl(`/api/employees/delete/${id}`));
       loadEmployees();
     } catch (error) {
       console.error("Error deleting employee:", error);

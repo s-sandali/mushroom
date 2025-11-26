@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { buildApiUrl } from '../../config/apiConfig';
 
 
 // Roles for the dropdown
@@ -33,7 +34,7 @@ export default function EmployeeManagement() {
   const loadEmployees = async () => {
     try {
       setIsLoading(true);
-      const result = await axios.get("http://localhost:8080/api/employees/get");
+      const result = await axios.get(buildApiUrl('/api/employees/get'));
       setEmployees(result.data);
       setError('');
     } catch (error) {
@@ -71,11 +72,11 @@ export default function EmployeeManagement() {
     }
     try {
       if (isEditing && editId) {
-        await axios.put(`http://localhost:8080/api/employees/update/${editId}`, {
+        await axios.put(buildApiUrl(`/api/employees/update/${editId}`), {
           name, nic, phone, address, sex: sex.toUpperCase(), role: role.toUpperCase()
         });
       } else {
-        await axios.post("http://localhost:8080/api/employees/add", {
+        await axios.post(buildApiUrl('/api/employees/add'), {
           name, nic, phone, address, sex: sex.toUpperCase(), role: role.toUpperCase()
         });
       }
@@ -89,7 +90,7 @@ export default function EmployeeManagement() {
   const onEdit = async (id) => {
     try {
       setIsLoading(true);
-      const response = await axios.get(`http://localhost:8080/api/employees/view?id=${id}`);
+      const response = await axios.get(buildApiUrl(`/api/employees/view?id=${id}`));
       setFormData({
         name: response.data.name,
         nic: response.data.nic,
@@ -111,7 +112,7 @@ export default function EmployeeManagement() {
   const onDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this employee?")) return;
     try {
-      await axios.delete(`http://localhost:8080/api/employees/delete/${id}`);
+      await axios.delete(buildApiUrl(`/api/employees/delete/${id}`));
       loadEmployees();
     } catch (error) {
       setError("Failed to delete employee.");
@@ -121,7 +122,7 @@ export default function EmployeeManagement() {
   const onView = async (id) => {
     try {
       setIsLoading(true);
-      const response = await axios.get(`http://localhost:8080/api/employees/view?id=${id}`);
+      const response = await axios.get(buildApiUrl(`/api/employees/view?id=${id}`));
       setViewEmployee(response.data);
       setError('');
     } catch (error) {

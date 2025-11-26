@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation, useNavigate} from 'react-router-dom';
 import { FaBoxes } from 'react-icons/fa';
 import axios from 'axios';
+import { buildApiUrl } from '../config/apiConfig';
 
 export default function InventoryManagement() {
   const location = useLocation();
@@ -24,9 +25,9 @@ export default function InventoryManagement() {
     try {
       let response;
       if (usageType === 'all') {
-        response = await axios.get('http://localhost:8080/api/v2/getInvs');
+        response = await axios.get(buildApiUrl('/api/v2/getInvs'));
       } else {
-        response = await axios.get(`http://localhost:8080/api/v2/getInvByUsage/${usageType}`);
+        response = await axios.get(buildApiUrl(`/api/v2/getInvByUsage/${usageType}`));
       }
       setInventory(response.data);
     } catch (error) {
@@ -57,12 +58,12 @@ export default function InventoryManagement() {
         used_stock: parseInt(currentItem.used_stock) || 0
       };
       if (isEditing) {
-        await axios.put("http://localhost:8080/api/v2/updateInv", itemToSubmit);
+        await axios.put(buildApiUrl('/api/v2/updateInv'), itemToSubmit);
         if (usageType === 'all' && itemToSubmit.usageType !== currentItem.usageType) {
           navigate(`/inventory/${itemToSubmit.usageType}`);
         }
       } else {
-        await axios.post("http://localhost:8080/api/v2/saveInv", itemToSubmit);
+        await axios.post(buildApiUrl('/api/v2/saveInv'), itemToSubmit);
       }
       resetForm();
       loadInventory();
@@ -74,7 +75,7 @@ export default function InventoryManagement() {
   const deleteItem = async (nid) => {
     if(window.confirm("Are you sure you want to delete this item?")) {
       try {
-        await axios.delete(`http://localhost:8080/api/v2/deleteInv/${nid}`);
+        await axios.delete(buildApiUrl(`/api/v2/deleteInv/${nid}`));
         loadInventory();
       } catch (error) {
         console.error("Error deleting item:", error);
@@ -85,7 +86,7 @@ export default function InventoryManagement() {
 
   const editItem = async (item) => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/v2/getInv/${item.nid}`);
+      const response = await axios.get(buildApiUrl(`/api/v2/getInv/${item.nid}`));
       console.log("Edit response:", response.data);
       if(response.data) {
         setCurrentItem(response.data);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaBoxOpen } from 'react-icons/fa';
+import { buildApiUrl } from '../config/apiConfig';
 
 export default function Raw() {
   const [raws, setRaws] = useState([]);
@@ -13,7 +14,7 @@ export default function Raw() {
 
   const loadRaws = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/api/v1/getRaws");
+      const result = await axios.get(buildApiUrl('/api/v1/getRaws'));
       setRaws(result.data);
     } catch (error) {
       console.error("Error loading raws:", error);
@@ -29,9 +30,9 @@ export default function Raw() {
     e.preventDefault();
     try {
       if (isEditing) {
-        await axios.put("http://localhost:8080/api/v1/updateRaw", currentRaw);
+        await axios.put(buildApiUrl('/api/v1/updateRaw'), currentRaw);
       } else {
-        await axios.post("http://localhost:8080/api/v1/saveRaw", currentRaw);
+        await axios.post(buildApiUrl('/api/v1/saveRaw'), currentRaw);
       }
       resetForm();
       loadRaws();
@@ -43,7 +44,7 @@ export default function Raw() {
   const deleteRaw = async (id) => {
     if (!window.confirm("Are you sure you want to delete this material?")) return;
     try {
-      await axios.delete(`http://localhost:8080/api/v1/deleteRaw/${id}`);
+      await axios.delete(buildApiUrl(`/api/v1/deleteRaw/${id}`));
       loadRaws();
     } catch (error) {
       alert("Error deleting material: " + (error.response?.data?.message || error.message));
@@ -52,7 +53,7 @@ export default function Raw() {
 
   const editRaw = async (raw) => {
     try {
-      const result = await axios.get(`http://localhost:8080/api/v1/getRaw/${raw.id}`);
+      const result = await axios.get(buildApiUrl(`/api/v1/getRaw/${raw.id}`));
       setCurrentRaw(result.data);
       setIsEditing(true);
     } catch (error) {

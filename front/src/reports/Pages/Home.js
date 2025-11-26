@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { buildApiUrl } from '../../config/apiConfig';
 
 export default function Home() {
   const [materials, setMaterials] = useState([]);
@@ -14,7 +15,7 @@ export default function Home() {
   const loadMaterials = async () => {
     try {
       setIsLoading(true);
-      const result = await axios.get("http://localhost:8080/api/v3/material/get");
+      const result = await axios.get(buildApiUrl('/api/v3/material/get'));
       setMaterials(result.data);
       setError(null);
     } catch (error) {
@@ -29,7 +30,7 @@ export default function Home() {
     if (!window.confirm("Are you sure you want to delete this material?")) return;
     
     try {
-      await axios.delete("http://localhost:8080/api/v3/material/delete", {
+      await axios.delete(buildApiUrl('/api/v3/material/delete'), {
         data: { id }
       });
       loadMaterials();

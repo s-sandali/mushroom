@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { PackagePlus, ArrowLeft } from 'lucide-react';
+import { buildApiUrl } from '../../config/apiConfig';
 
 export default function AddMaterials() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function AddMaterials() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await axios.post("http://localhost:8080/api/v3/material/add", {
+      await axios.post(buildApiUrl('/api/v3/material/add'), {
         ...material,
         quantity: parseInt(material.quantity)
       });

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../config/apiConfig';
+
+const SOLD_ENDPOINT = `${API_BASE_URL}/api/Sold`;
+const PRODUCT_ENDPOINT = `${API_BASE_URL}/api/product`;
 
 export default function SalesManagement() {
   const [sales, setSales] = useState([]);
@@ -25,7 +29,7 @@ export default function SalesManagement() {
 
   const getAllSales = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/Sold');
+      const response = await axios.get(SOLD_ENDPOINT);
       setSales(response.data || []);
     } catch (error) {
       setSales([]);
@@ -36,7 +40,7 @@ export default function SalesManagement() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/product');
+      const response = await axios.get(PRODUCT_ENDPOINT);
       setProducts(response.data || []);
     } catch (err) {
       setProducts([]);
@@ -99,9 +103,9 @@ export default function SalesManagement() {
         }
       };
       if (isEditing && editId) {
-        await axios.put(`http://localhost:8080/api/Sold/${editId}`, saleData, config);
+        await axios.put(`${SOLD_ENDPOINT}/${editId}`, saleData, config);
       } else {
-        await axios.post('http://localhost:8080/api/Sold', saleData, config);
+        await axios.post(SOLD_ENDPOINT, saleData, config);
       }
       resetForm();
       getAllSales();
@@ -134,7 +138,7 @@ export default function SalesManagement() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this sale?')) return;
     try {
-      await axios.delete(`http://localhost:8080/api/Sold/${id}`);
+      await axios.delete(`${SOLD_ENDPOINT}/${id}`);
       getAllSales();
     } catch (error) {
       setError('Failed to delete sale.');

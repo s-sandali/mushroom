@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { API_BASE_URL } from '../../config/apiConfig';
+
+const PREORDERS_ENDPOINT = `${API_BASE_URL}/api/preorders`;
+const PRODUCTS_ENDPOINT = `${API_BASE_URL}/api/product`;
 
 export default function PreorderManagement() {
   const [preorders, setPreorders] = useState([]);
@@ -26,7 +30,7 @@ export default function PreorderManagement() {
 
   const getAllPreorders = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/preorders');
+      const response = await axios.get(PREORDERS_ENDPOINT);
       setPreorders(response.data || []);
     } catch (error) {
       setPreorders([]);
@@ -37,7 +41,7 @@ export default function PreorderManagement() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/product'); 
+      const response = await axios.get(PRODUCTS_ENDPOINT); 
       // Normalize product keys to match what the form expects
       const normalizedProducts = response.data.map(p => ({
         id: p.productId,
@@ -116,9 +120,9 @@ export default function PreorderManagement() {
         }
       };
       if (isEditing && editId) {
-        await axios.put(`http://localhost:8080/api/preorders/${editId}`, preorderData, config);
+        await axios.put(`${PREORDERS_ENDPOINT}/${editId}`, preorderData, config);
       } else {
-        await axios.post('http://localhost:8080/api/preorders', preorderData, config);
+        await axios.post(PREORDERS_ENDPOINT, preorderData, config);
       }
       resetForm();
       getAllPreorders();
@@ -151,7 +155,7 @@ export default function PreorderManagement() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this preorder?')) return;
     try {
-      await axios.delete(`http://localhost:8080/api/preorders/${id}`);
+      await axios.delete(`${PREORDERS_ENDPOINT}/${id}`);
       getAllPreorders();
     } catch (error) {
       setError('Failed to delete preorder.');

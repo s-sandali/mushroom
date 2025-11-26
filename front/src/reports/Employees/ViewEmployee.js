@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
+import { buildApiUrl } from '../../config/apiConfig';
 
 export default function ViewEmployee() {
   const { id } = useParams();
@@ -12,7 +13,7 @@ export default function ViewEmployee() {
     const fetchEmployee = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`http://localhost:8080/api/employees/view?id=${id}`);
+        const response = await axios.get(buildApiUrl(`/api/employees/view?id=${id}`));
         setEmployee(response.data);
         setError(null);
       } catch (error) {

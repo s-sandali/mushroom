@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowUpCircle,  Filter, BarChart2, RefreshCw, Search } from 'lucide-react';
+import { API_BASE_URL } from '../../config/apiConfig';
+
+const OVERALL_SALES_ENDPOINT = `${API_BASE_URL}/api/admin/overall-sales`;
 
 export default function SalesTable() {
   const [salesData, setSalesData] = useState([]);
@@ -20,7 +23,7 @@ export default function SalesTable() {
       setIsLoading(true);
       try {
         // Replace with your actual API endpoint
-        const response = await fetch("http://localhost:8080/api/admin/overall-sales", {
+        const response = await fetch(OVERALL_SALES_ENDPOINT, {
           credentials: 'include'
         });
         if (!response.ok) {

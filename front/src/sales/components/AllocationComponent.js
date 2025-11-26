@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { API_BASE_URL } from '../../config/apiConfig';
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_ROOT = `${API_BASE_URL}/api`;
 
 function AllocationComponent() {
   const [allocations, setAllocations] = useState([]);
@@ -32,9 +33,9 @@ function AllocationComponent() {
       setLoading(true);
       setError(null);
       const [allocationsRes, productsRes, branchesRes] = await Promise.all([
-        axios.get(`${API_BASE_URL}/allocations`),
-        axios.get(`${API_BASE_URL}/product`),
-        axios.get(`${API_BASE_URL}/branch`)
+        axios.get(`${API_ROOT}/allocations`),
+        axios.get(`${API_ROOT}/product`),
+        axios.get(`${API_ROOT}/branch`)
       ]);
       setAllocations(allocationsRes.data);
       setProducts(productsRes.data);
@@ -93,12 +94,12 @@ function AllocationComponent() {
         date: formData.date
       };
       if (isEditing && editId) {
-        const response = await axios.put(`${API_BASE_URL}/allocations/${editId}`, allocationData, {
+        const response = await axios.put(`${API_ROOT}/allocations/${editId}`, allocationData, {
           headers: { 'Content-Type': 'application/json' }
         });
         setAllocations(allocations.map(a => a.id === editId ? response.data : a));
       } else {
-        const response = await axios.post(`${API_BASE_URL}/allocations`, allocationData, {
+        const response = await axios.post(`${API_ROOT}/allocations`, allocationData, {
           headers: { 'Content-Type': 'application/json' }
         });
         setAllocations([...allocations, response.data]);
@@ -127,7 +128,7 @@ function AllocationComponent() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this allocation?')) return;
     try {
-      await axios.delete(`${API_BASE_URL}/allocations/${id}`);
+      await axios.delete(`${API_ROOT}/allocations/${id}`);
       setAllocations(allocations.filter(a => a.id !== id));
     } catch (err) {
       setError('Failed to delete allocation');

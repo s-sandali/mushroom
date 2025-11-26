@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaBoxes } from 'react-icons/fa';
+import { buildApiUrl } from '../config/apiConfig';
 
 export default function Stock() {
   const [stocks, setStocks] = useState([]);
@@ -11,7 +12,7 @@ export default function Stock() {
 
   const loadStocks = async () => {
     try {
-      const result = await axios.get("http://localhost:8080/api/v4/getStocks");
+      const result = await axios.get(buildApiUrl('/api/v4/getStocks'));
       setStocks(result.data);
     } catch (error) {
       console.error('Failed to load stocks:', error);

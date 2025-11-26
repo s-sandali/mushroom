@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { buildApiUrl } from '../../config/apiConfig';
 //import { Link } from 'react-router-dom';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
@@ -18,7 +19,7 @@ export default function MaterialManagement() {
   const loadMaterials = async () => {
     try {
       setIsLoading(true);
-      const result = await axios.get("http://localhost:8080/api/v3/material/get");
+      const result = await axios.get(buildApiUrl('/api/v3/material/get'));
       setMaterials(result.data);
       setError(null);
     } catch (error) {
@@ -42,12 +43,12 @@ export default function MaterialManagement() {
       };
 
       if (isEditing) {
-        await axios.put('http://localhost:8080/api/v3/material/update', {
+        await axios.put(buildApiUrl('/api/v3/material/update'), {
           ...materialData,
           id: parseInt(formData.id)
         });
       } else {
-        await axios.post("http://localhost:8080/api/v3/material/add", materialData);
+        await axios.post(buildApiUrl('/api/v3/material/add'), materialData);
       }
       
       resetForm();
@@ -65,7 +66,7 @@ export default function MaterialManagement() {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this material?')) return;
     try {
-      await axios.delete("http://localhost:8080/api/v3/material/delete", { data: { id } });
+      await axios.delete(buildApiUrl('/api/v3/material/delete'), { data: { id } });
       loadMaterials();
     } catch (error) {
       setError("Failed to delete material.");
