@@ -16,8 +16,9 @@ public class CorsConfig {
 
         // Local development frontend
         config.addAllowedOrigin("http://localhost:3000");
-        // Deployed Vercel frontend (updated)
+        // Deployed Vercel frontends
         config.addAllowedOrigin("https://mushroom-tawny.vercel.app");
+        config.addAllowedOrigin("https://mushroom-git-main-s-sandalis-projects.vercel.app");
 
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
